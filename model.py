@@ -80,6 +80,25 @@ print(X['famsup'].unique())
 print(X['famsup'].value_counts())
 
 #Multi-class categorical(more than one options) mapping- one-hot encoding
+#mothers job
+# before encoding 
+print("\nbefore encoding shape is")
+print(datas['Mjob'].shape) #- (395,)
+#encoding
+pd.get_dummies(datas['Mjob'])
+# after encoding 
+print("\nafter encoding")
+print(pd.get_dummies(datas['Mjob']).head())
+
+
+#fathers job
+print("\nbefore encoding shape is")
+print(datas['Fjob'].shape) 
+#encoding
+pd.get_dummies(datas['Fjob'])
+# after encoding 
+print("\nafter encoding")
+print(pd.get_dummies(datas['Fjob']).head())
 
 
 
