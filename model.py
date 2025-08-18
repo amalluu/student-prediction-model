@@ -79,26 +79,30 @@ X['famsup']= X['famsup'].map({'yes':1,'no':0})
 print(X['famsup'].unique())
 print(X['famsup'].value_counts())
 
-#Multi-class categorical(more than one options) mapping- one-hot encoding
+#Multi-class categorical(more than one options) mapping- one-hot 
+        #get_dummies() allows you to represent categorical data in a numerical format(we get multiple colums)
+
 #mothers job
 # before encoding 
 print("\nbefore encoding shape is")
 print(datas['Mjob'].shape) #- (395,)
 #encoding
-pd.get_dummies(datas['Mjob'])
-# after encoding 
-print("\nafter encoding")
-print(pd.get_dummies(datas['Mjob']).head())
+mjob_dummies = pd.get_dummies(datas['Mjob'], prefix='Mjob')
+X = X.drop('Mjob', axis=1)  # axis=1 means “remove this column" ,axis = 0 "remove row"
+X = pd.concat([X, mjob_dummies], axis=1)  # Add all dummy columns
 
 
 #fathers job
 print("\nbefore encoding shape is")
 print(datas['Fjob'].shape) 
 #encoding
-pd.get_dummies(datas['Fjob'])
+fjob_dummies = pd.get_dummies(datas['Fjob'], prefix='Fjob')
+X = X.drop('Fjob', axis=1)  # axis=1 means “remove this column" ,axis = 0 "remove row"
+X = pd.concat([X, fjob_dummies], axis=1)  # Add all dummy columns
+
 # after encoding 
 print("\nafter encoding")
-print(pd.get_dummies(datas['Fjob']).head())
+print(X.head())
 
-
-
+print("Data types in X:")
+print(X.dtypes)
