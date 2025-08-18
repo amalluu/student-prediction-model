@@ -6,6 +6,10 @@ from sklearn.preprocessing import StandardScaler#rescales all features to a simi
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.model_selection import GridSearchCV
+from sklearn.ensemble import GradientBoostingClassifier
+
 
 
 datas= pd.read_csv('data/student-mat.csv',sep=';')
@@ -192,3 +196,30 @@ model.fit(X_train , Y_train )
 predict_Y = model.predict(X_test)
 accuracy= accuracy_score(Y_test ,predict_Y)
 print ("K-nearest neighbors:", accuracy)
+
+#5. Support Vector Machine (SVM)
+# parameter grid
+param_grid = {
+    'C': [0.1, 1, 10, 100],
+    'gamma': [0.001, 0.01, 0.1, 1, 'scale'],
+    'kernel': ['rbf', 'linear']
+}
+
+grid = GridSearchCV(SVC(random_state=42), param_grid, cv=5, scoring='accuracy', n_jobs=-1)
+grid.fit(X_train_scaled, Y_train)
+
+print("Best Parameters:", grid.best_params_)
+print("Best Cross-Validation Accuracy:", grid.best_score_)
+
+# retrain best model on full train data
+best_model = grid.best_estimator_
+accuracy = accuracy_score(Y_test, best_model.predict(X_test_scaled))
+print("Tuned SVM Accuracy:", accuracy)
+
+
+#6. GradientBoostingClassifier
+model= GradientBoostingClassifier()
+model.fit(X_train , Y_train )
+predict_Y = model.predict(X_test)
+accuracy= accuracy_score(Y_test ,predict_Y)
+print ("Gradient Boosting Accuracy:", accuracy)
