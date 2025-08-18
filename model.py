@@ -3,6 +3,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import StandardScaler#rescales all features to a similar range so the model’s optimization works better
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
 
 
 datas= pd.read_csv('data/student-mat.csv',sep=';')
@@ -118,8 +121,8 @@ X = X.drop('Fjob', axis=1)  # axis=1 means “remove this column" ,axis = 0 "rem
 X = pd.concat([X, fjob_dummies], axis=1)  # Add all dummy columns
 
 # after encoding 
-print("\nafter encoding")
-print(X.head())
+'''print("\nafter encoding")
+print(X.head())'''
 
 
 #drop unwanted featues
@@ -159,3 +162,33 @@ model.fit(X_train_scaled , Y_train )
 predict_Y = model.predict(X_test_scaled )
 accuracy= accuracy_score(Y_test ,predict_Y)
 print ("Logistic Regression Accuracy:", accuracy)
+
+
+#2.Decision Tree model
+model = DecisionTreeClassifier(random_state=42,min_samples_split=2)
+model.fit(X_train , Y_train )
+predict_Y = model.predict(X_test)
+accuracy= accuracy_score(Y_test ,predict_Y)
+print ("Decision Tree Accuracy:", accuracy)
+
+
+#3. Random Forest
+model = RandomForestClassifier(
+    random_state=42,    # FIXED randomness
+    n_estimators=500,   # more trees = more stable
+    max_depth=None,     # let it grow, or tune later
+    n_jobs=-1           # use all CPU cores
+)
+
+model.fit(X_train, Y_train)
+predict_Y = model.predict(X_test)
+accuracy = accuracy_score(Y_test, predict_Y)
+print("Random Forest Accuracy:", accuracy)
+
+
+#4.knn
+model = KNeighborsClassifier()
+model.fit(X_train , Y_train )
+predict_Y = model.predict(X_test)
+accuracy= accuracy_score(Y_test ,predict_Y)
+print ("K-nearest neighbors:", accuracy)
