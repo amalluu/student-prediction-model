@@ -1,4 +1,8 @@
 import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import StandardScaler#rescales all features to a similar range so the model’s optimization works better
 
 
 datas= pd.read_csv('data/student-mat.csv',sep=';')
@@ -21,6 +25,8 @@ print("\nY\n", Y.head())'''
 '''
 print("Data types in X:")
 print(X.dtypes)'''
+
+'''DATA PREPROCESSING'''
 
 #Handling non numeric values -
 #before mapping 
@@ -122,7 +128,34 @@ X = X.drop('reason', axis=1)
 X = X.drop('guardian', axis=1)
 X = X.drop('nursery', axis=1)
 
-print("Data types in X:")
+'''print("Data types in X:")
 print(X.dtypes)
+'''
+'''    TRAIN - TEST SPLIT          '''
 
-'''              '''
+X_train, X_test, Y_train, Y_test = train_test_split( X, Y, test_size=0.2, random_state=42)
+
+# 1.Logistic Regression model
+
+#initialize scaler
+scaler = StandardScaler()
+
+# fit on training data and transform it
+X_train_scaled = scaler.fit_transform(X_train)
+
+# only transform test data (using same fit as train)
+X_test_scaled = scaler.transform(X_test)
+
+
+
+
+#initialize model
+model = LogisticRegression(solver='lbfgs', max_iter=1000)
+
+# train the model
+model.fit(X_train_scaled , Y_train )
+
+#make predictions
+predict_Y = model.predict(X_test_scaled )
+accuracy= accuracy_score(Y_test ,predict_Y)
+print ("Logistic Regression Accuracy:", accuracy)
