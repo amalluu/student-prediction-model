@@ -69,6 +69,11 @@ X['Pstatus']= X['Pstatus'].map({'T':1,'A':0})
 print(X['Pstatus'].unique())
 print(X['Pstatus'].value_counts())
 
+#paid
+X['paid']= X['paid'].map({'yes':1,'no':0})
+print(X['paid'].unique())
+print(X['paid'].value_counts())
+
 #schoolsup
 X['schoolsup']= X['schoolsup'].map({'yes':1,'no':0})
 print(X['schoolsup'].unique())
@@ -78,6 +83,12 @@ print(X['schoolsup'].value_counts())
 X['famsup']= X['famsup'].map({'yes':1,'no':0})
 print(X['famsup'].unique())
 print(X['famsup'].value_counts())
+
+
+#higher
+X['higher']= X['higher'].map({'yes':1,'no':0})
+print(X['higher'].unique())
+print(X['higher'].value_counts())
 
 #Multi-class categorical(more than one options) mapping- one-hot 
         #get_dummies() allows you to represent categorical data in a numerical format(we get multiple colums)
@@ -104,5 +115,14 @@ X = pd.concat([X, fjob_dummies], axis=1)  # Add all dummy columns
 print("\nafter encoding")
 print(X.head())
 
+
+#drop unwanted featues
+
+X = X.drop('reason', axis=1)
+X = X.drop('guardian', axis=1)
+X = X.drop('nursery', axis=1)
+
 print("Data types in X:")
 print(X.dtypes)
+
+'''              '''
