@@ -168,7 +168,7 @@ def grade_to_category(grade):#out of 20
     elif grade>=8: return 'D'
     else: return 'F'
 # Convert numeric grades to categories
-Y_categories= Y.apply(grade_to_category) # applies that function to each element of Y
+Y_categories= Y.apply(grade_to_category) # applies that function to each element of Y - Transforms
 
 # Check conversion results
 print("\nGrade conversion results:")
@@ -181,7 +181,7 @@ print("New categories (first 10):", Y_categories.head(10).tolist())
 
 X_train, X_test, Y_train, Y_test = train_test_split( X, Y_categories, test_size=0.2, random_state=42)
 
-# 1.Logistic Regression model
+
 
 #initialize scaler
 scaler = StandardScaler()
@@ -194,7 +194,7 @@ X_test_scaled = scaler.transform(X_test)
 
 
 
-
+# 1.Logistic Regression model
 #initialize model
 model = LogisticRegression(solver='lbfgs', max_iter=1000)
 
@@ -239,6 +239,20 @@ print ("K-nearest neighbors:", accuracy)
 #5. GradientBoostingClassifier
 model= GradientBoostingClassifier(random_state=42)
 model.fit(X_train , Y_train )
+
+#  Get feature importance scores
+imp_feature =model.feature_importances_ #Importance scores: [0.0008, 0.0009, 0.023, 0.001, 0.007, ...]  ← imp_feature
+
+#Combine feature names with their scores
+#zip object is created when we use zip. so add it to list
+feature_imp_pairs = list(zip(X.columns,imp_feature)) #connect these feature scores to feature names
+
+
+#Sort by importance score (descending)
+sorted_imp_features = sorted(feature_imp_pairs, key=lambda x: x[1], reverse=True) #key=lambda x: x[1] sort by the second thing in feature_imp_pairs instead of feature names, reverse=True - descending
+print(sorted_imp_features[:5])
+
+#predicting
 predict_Y = model.predict(X_test)
 accuracy= accuracy_score(Y_test ,predict_Y)
 print ("Gradient Boosting Accuracy:", accuracy)
