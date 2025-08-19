@@ -250,7 +250,17 @@ feature_imp_pairs = list(zip(X.columns,imp_feature)) #connect these feature scor
 
 #Sort by importance score (descending)
 sorted_imp_features = sorted(feature_imp_pairs, key=lambda x: x[1], reverse=True) #key=lambda x: x[1] sort by the second thing in feature_imp_pairs instead of feature names, reverse=True - descending
-print(sorted_imp_features[:5])
+# Show top 10 most important features
+print("TOP 10 MOST IMPORTANT FACTORS FOR STUDENT GRADES in GradientBoosting:")
+print("=" *60)
+for i, (feature, importance) in enumerate(sorted_imp_features[:10]):
+    print(f"{i+1:2}. {feature:15} : {importance:.3f} ({importance*100:.1f}%)")
+#{i+1:2} → prints rank number (1, 2, 3 …). :2 means make space of at least 2 digits.
+#{feature:15} →feature  column of width 15.
+#{importance:.3f} → shows importance with 3 decimals (0.717).
+#{importance*100:.1f}% → converts to percentage with 1 decimal (71.7%)
+
+
 
 #predicting
 predict_Y = model.predict(X_test)
