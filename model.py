@@ -191,35 +191,30 @@ print("Random Forest Accuracy:", accuracy)
 
 
 #4.knn
-model = KNeighborsClassifier()
-model.fit(X_train , Y_train )
+model = KNeighborsClassifier(n_neighbors=5)
+model.fit(X_train, Y_train )
 predict_Y = model.predict(X_test)
 accuracy= accuracy_score(Y_test ,predict_Y)
 print ("K-nearest neighbors:", accuracy)
 
-#5. Support Vector Machine (SVM)
-# parameter grid
-param_grid = {
-    'C': [0.1, 1, 10, 100],
-    'gamma': [0.001, 0.01, 0.1, 1, 'scale'],
-    'kernel': ['rbf', 'linear']
-}
-
-grid = GridSearchCV(SVC(random_state=42), param_grid, cv=5, scoring='accuracy', n_jobs=-1)
-grid.fit(X_train_scaled, Y_train)
-
-print("Best Parameters:", grid.best_params_)
-print("Best Cross-Validation Accuracy:", grid.best_score_)
-
-# retrain best model on full train data
-best_model = grid.best_estimator_
-accuracy = accuracy_score(Y_test, best_model.predict(X_test_scaled))
-print("Tuned SVM Accuracy:", accuracy)
-
-
-#6. GradientBoostingClassifier
-model= GradientBoostingClassifier()
+#5. GradientBoostingClassifier
+model= GradientBoostingClassifier(random_state=42)
 model.fit(X_train , Y_train )
 predict_Y = model.predict(X_test)
 accuracy= accuracy_score(Y_test ,predict_Y)
 print ("Gradient Boosting Accuracy:", accuracy)
+
+
+# Check your target variable
+print("Target variable (Y) details:")
+print(f"Y unique values: {Y.unique()}")
+print(f"Y shape: {Y.shape}")
+print(f"Y value counts:\n{Y.value_counts()}")
+
+
+# Check for missing values in your features (X)- X (DataFrame) - multiple columns
+print(f"\nMissing values per column in X:{X.isnull().sum()}")      # [0, 3, 1, 0, 0]  ← Need to sum this list
+print(f"\nTotal missing values in X: {X.isnull().sum().sum()}")    # 4      ← Final total
+
+# Check for missing values in target (Y) -Y (Series) - single column  
+print(f"\nMissing values in Y: {Y.isnull().sum()}")     #2     ← Already a single number 
