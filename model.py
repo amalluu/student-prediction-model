@@ -138,9 +138,48 @@ X = X.drop('nursery', axis=1)
 '''print("Data types in X:")
 print(X.dtypes)
 '''
+
+'''    DATA QUALITY CHECKS    '''
+
+
+'''
+# Check for missing values in your features (X)- X (DataFrame) - multiple columns
+print(f"\nMissing values per column in X:{X.isnull().sum()}")      # [0, 3, 1, 0, 0]  ← Need to sum this list
+print(f"\nTotal missing values in X: {X.isnull().sum().sum()}")    # 4      ← Final total
+# Check for missing values in target (Y) -Y (Series) - single column  
+print(f"\nMissing values in Y: {Y.isnull().sum()}")     #2     ← Already a single number 
+
+            #there is no missing values
+
+# Check your original target variable(Y)
+print("Target variable (Y) details:")
+print(f"Y unique values: {Y.unique()}")
+print(f"Y shape: {Y.shape}")
+print(f"Y value counts:\n{Y.value_counts()}")
+
+            #Trying to predict 18 different exact grades is mess
+            # so we convert grades to categories A, B, C, D, F
+'''
+# Create function to convert grades to categories
+def grade_to_category(grade):#out of 20
+    if grade>=16: return 'A'
+    elif grade>=12: return'B'
+    elif grade>=10: return'C'
+    elif grade>=8: return 'D'
+    else: return 'F'
+# Convert numeric grades to categories
+Y_categories= Y.apply(grade_to_category) # applies that function to each element of Y
+
+# Check conversion results
+print("\nGrade conversion results:")
+print("Original Y (first 10):", Y.head(10).tolist())
+print("New categories (first 10):", Y_categories.head(10).tolist())
+
+
+
 '''    TRAIN - TEST SPLIT          '''
 
-X_train, X_test, Y_train, Y_test = train_test_split( X, Y, test_size=0.2, random_state=42)
+X_train, X_test, Y_train, Y_test = train_test_split( X, Y_categories, test_size=0.2, random_state=42)
 
 # 1.Logistic Regression model
 
@@ -204,17 +243,3 @@ predict_Y = model.predict(X_test)
 accuracy= accuracy_score(Y_test ,predict_Y)
 print ("Gradient Boosting Accuracy:", accuracy)
 
-
-# Check your target variable
-print("Target variable (Y) details:")
-print(f"Y unique values: {Y.unique()}")
-print(f"Y shape: {Y.shape}")
-print(f"Y value counts:\n{Y.value_counts()}")
-
-
-# Check for missing values in your features (X)- X (DataFrame) - multiple columns
-print(f"\nMissing values per column in X:{X.isnull().sum()}")      # [0, 3, 1, 0, 0]  ← Need to sum this list
-print(f"\nTotal missing values in X: {X.isnull().sum().sum()}")    # 4      ← Final total
-
-# Check for missing values in target (Y) -Y (Series) - single column  
-print(f"\nMissing values in Y: {Y.isnull().sum()}")     #2     ← Already a single number 
