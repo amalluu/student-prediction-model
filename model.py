@@ -236,8 +236,17 @@ predict_Y = model.predict(X_test)
 accuracy= accuracy_score(Y_test ,predict_Y)
 print ("K-nearest neighbors:", accuracy)
 
+
 #5. GradientBoostingClassifier
-model= GradientBoostingClassifier(random_state=42)
+
+
+# n_estimators = 100 (number of trees)
+# learning_rate = 0.1 (how fast it learns)
+# max_depth = 3 (how deep each tree goes)
+
+
+
+model= GradientBoostingClassifier(random_state=42,n_estimators = 200,learning_rate = 0.1 ,max_depth = 3)
 model.fit(X_train , Y_train )
 
 #  Get feature importance scores
